@@ -1,0 +1,17 @@
+name: rls-guard-dog
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - nodejs>=18.0.0
+  - npm>=9.0.0
+  - python>=3.9
+  - pip
+  - git
+  - curl
+  - wget
+  - pip:
+    # This will be used for any Python dependencies if needed
+    # Currently focusing on Node.js/Next.js stack
+    - python-dotenv
+    - pymongo

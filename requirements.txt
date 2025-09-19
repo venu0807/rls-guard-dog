@@ -1,0 +1,36 @@
+# Next.js Classroom Management System - RLS Guard Dog
+# Dependencies for the complete full-stack application
+
+# Core Dependencies
+@supabase/supabase-js>=2.45.0
+@supabase/ssr>=0.5.0
+next>=15.0.0
+react>=18.0.0
+react-dom>=18.0.0
+typescript>=5.0.0
+
+# Authentication & Forms
+react-hook-form>=7.48.0
+@hookform/resolvers>=3.3.0
+zod>=3.22.0
+
+# Database
+mongodb>=6.0.0
+
+# UI & Styling
+tailwindcss>=3.3.0
+lucide-react>=0.400.0
+
+# Development Dependencies
+@types/node>=20.0.0
+@types/react>=18.0.0
+@types/react-dom>=18.0.0
+eslint>=8.0.0
+eslint-config-next>=14.0.0
+
+# Build Tools
+@tailwindcss/postcss>=0.1.0
+postcss>=8.4.0
+autoprefixer>=10.4.0
+
+# Additional packages may be added during development
