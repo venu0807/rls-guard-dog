@@ -3,13 +3,26 @@ import type { NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
 export async function middleware(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
+  const supabaseResponse = NextResponse.next({
     request,
   })
 
+  // Check if Supabase credentials are properly configured
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  
+  // If Supabase is not configured, skip authentication checks
+  if (!supabaseUrl || !supabaseKey || 
+      supabaseUrl === 'your_supabase_project_url' || 
+      supabaseKey === 'your_supabase_anon_key' ||
+      !supabaseUrl.startsWith('http')) {
+    console.warn('Supabase not configured - middleware authentication checks disabled')
+    return supabaseResponse
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseKey,
     {
       cookies: {
         getAll() {

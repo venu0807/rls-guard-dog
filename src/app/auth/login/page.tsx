@@ -15,6 +15,10 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const supabase = createClient()
+  
+  // Check if we're in demo mode
+  const isDemoMode = !process.env.NEXT_PUBLIC_SUPABASE_URL || 
+                    process.env.NEXT_PUBLIC_SUPABASE_URL === 'demo_mode_no_supabase_url'
 
   const {
     register,
@@ -29,6 +33,23 @@ export default function LoginPage() {
     setError(null)
 
     try {
+      // Check if we're in demo mode
+      const isDemoMode = !process.env.NEXT_PUBLIC_SUPABASE_URL || 
+                        process.env.NEXT_PUBLIC_SUPABASE_URL === 'demo_mode_no_supabase_url'
+      
+      if (isDemoMode) {
+        // Demo mode: Show success message and redirect to student dashboard
+        alert(`Demo Mode: Login successful!
+
+Email: ${data.email}
+Logging in as Demo User (Student)
+
+Redirecting to dashboard...`)
+        router.push('/dashboard')
+        return
+      }
+
+      // Production mode: Full Supabase authentication
       const { error: signInError } = await supabase.auth.signInWithPassword({
         email: data.email,
         password: data.password,
@@ -50,7 +71,7 @@ export default function LoginPage() {
       } else {
         router.push('/teacher')
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setIsLoading(false)
@@ -67,6 +88,23 @@ export default function LoginPage() {
           <p className="mt-2 text-center text-sm text-gray-600">
             Classroom Management System
           </p>
+          
+          {isDemoMode && (
+            <div className="mt-4 bg-amber-100 border-l-4 border-amber-500 p-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="text-sm text-amber-700">
+                    <strong>Demo Mode:</strong> Login will simulate authentication without connecting to a database.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="rounded-md shadow-sm -space-y-px">
@@ -123,7 +161,7 @@ export default function LoginPage() {
 
           <div className="text-center">
             <Link href="/auth/signup" className="text-blue-600 hover:text-blue-500">
-              Don't have an account? Sign up
+              Don&apos;t have an account? Sign up
             </Link>
           </div>
         </form>

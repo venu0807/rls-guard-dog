@@ -1,4 +1,5 @@
 import { createBrowserClient } from '@supabase/ssr'
+import type { Database } from '@/types/database'
 
 export function createClient() {
   // Check if Supabase credentials are properly configured
@@ -8,7 +9,7 @@ export function createClient() {
   if (!supabaseUrl || !supabaseKey || 
       supabaseUrl === 'your_supabase_project_url' || 
       supabaseKey === 'your_supabase_anon_key') {
-    // Return a mock client for demo purposes
+    // Return a properly typed mock client for demo purposes
     return {
       auth: {
         getUser: async () => ({ data: { user: null }, error: null }),
@@ -23,10 +24,10 @@ export function createClient() {
           })
         })
       })
-    } as any
+    } as any as ReturnType<typeof createBrowserClient<Database>>
   }
 
-  return createBrowserClient(
+  return createBrowserClient<Database>(
     supabaseUrl,
     supabaseKey
   )

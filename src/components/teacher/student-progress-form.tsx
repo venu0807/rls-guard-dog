@@ -28,7 +28,8 @@ export function StudentProgressForm({ classrooms, students }: Props) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
-  const [selectedClassroom, setSelectedClassroom] = useState<string>('')
+  // Remove unused selectedClassroom state
+  // const [selectedClassroom] = useState<string>('')
   const router = useRouter()
   const supabase = createClient()
 
@@ -76,7 +77,7 @@ export function StudentProgressForm({ classrooms, students }: Props) {
       setSuccess('Progress added successfully!')
       reset()
       router.refresh()
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setIsLoading(false)
